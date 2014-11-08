@@ -15,11 +15,11 @@ $( "html,body" ).animate({
   }, 1500);
 		
 
-setTimeout(function() {
-	$("#logindiv").fadeOut();
-	$("#logindiv").remove();
-	$("body").load("main.php");
-}, 1500);
+// setTimeout(function() {
+// 	$("#logindiv").fadeOut();
+// 	$("#logindiv").remove();
+// 	$("body").load("main.php");
+// }, 1500);
 });
 
 function fnc_login(){

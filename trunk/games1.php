@@ -12,7 +12,7 @@ $resulttemp=mysql_fetch_array($querytemp);
      <div class="templatemo_ourteam">
      		<div class="container templatemo_hexteam">
      		<div class="row">
-     		<div style="text-align: left">
+     		<div style="text-align: left;display:none;" id="soundans" >
      		<b style="color: black;font-size: 20px" id="cAns">ข้อที่ 1.</b>
      		<img style="cursor: pointer;" src="images/voice.png" width="100" height="100" onclick="document.getElementById('sound1').play()" />
      		<span style="color:black;font-size: 30px;font-weight: bold;"> <-คลิกเพื่อเล่นเสียง</span>
@@ -23,8 +23,8 @@ $resulttemp=mysql_fetch_array($querytemp);
 	</div>
 </div>
             	<div class="row" style="margin-top: 30px">
-            	 <b id="divg1">
-<!--             	  style="display:none" -->
+            	 <b id="divg1" style="display:none">
+<!--             	   -->
                 	<div class="col-md-3 col-sm-4" id="divg1">
                         	 <div class="hexagon hexagonteam gallery-item">
                                <div class="hexagon-in1">
@@ -41,6 +41,7 @@ $resulttemp=mysql_fetch_array($querytemp);
                         <p style="color:black !important;" id="detail1">d1</p>
                     </div>
                   </b>
+                   <b id="divg2" style="display:none">
                     <div class="templatemo_servicecol2">
                     <div class="col-md-3 col-sm-4">
                         	 <div class="hexagon hexagonteam gallery-item">
@@ -58,11 +59,13 @@ $resulttemp=mysql_fetch_array($querytemp);
                         <p style="color:black !important;" id="detail2">d2</p>
                     </div>
                     </div>
+                    </b>
                </div>
             </div>
             <div class="clear"></div>
             <div class="container templatemo_hexteam s_top">
             	<div class="row">
+            	  <b id="divg3" style="display:none">
                 	<div class="col-md-3 col-sm-4">
                         	 <div class="hexagon hexagonteam gallery-item">
                                <div class="hexagon-in1">
@@ -78,6 +81,8 @@ $resulttemp=mysql_fetch_array($querytemp);
                     	<h2 style="color:black !important;" id="topic3">t3</h2>
                         <p style="color:black !important;" id="detail3">d3 </p>
                     </div>
+                    </b>
+                      <b id="divg4" style="display:none">
                     <div class="templatemo_servicecol2">
                     <div class="col-md-3 col-sm-4">
                         	 <div class="hexagon hexagonteam gallery-item">
@@ -95,6 +100,7 @@ $resulttemp=mysql_fetch_array($querytemp);
                         <p style="color:black !important;" id="detail4">d4</p>
                     </div>
                     </div>
+                    </b>
                </div>
             </div>
             
@@ -103,9 +109,14 @@ $resulttemp=mysql_fetch_array($querytemp);
 var nums=1;
 var score=0;
 var cor=0;
+var _atAudio;
+var _thismax=new Array();
+var _thisname=new Array();
+var load4=0;
 $(function(){
 	loadAns();
 $(".imgAns").click(function(){
+	if(load4==5){
 	if($(this).attr("numVal")==$("#correctAns").val()){
 		score++;
 		cor=1;
@@ -132,6 +143,7 @@ success:function(msg){
 	{	
 $("#cAns").text("ข้อที่."+nums);
 loadAns();}
+}else{alert("กรุณาฟังคำอธิบาย");}
 });
 	
 });
@@ -140,10 +152,13 @@ function loadAns(){
 	$.ajax({
 		url:'func/game1func.php?level=<?php echo $_GET["level"];?>&num='+nums,
 		success:function(res){
-			console.log(res);
+			load4=0;
+			//console.log(res);
 			var obj=$.parseJSON(res);
 			var msgd;
-			console.log(obj);
+			var txtsplit;
+			//console.log(obj);
+			$("#lsound").remove();
 			$("#correctAns").val(obj.correct);
 			$("#divsound").html('');
 			$("#divsound").html("<audio id='sound1' controls><source src='sounds/"+obj.sound+".wav' type='audio/wav'/><source src='sounds/"+obj.sound+".wav' type='audio/ogg'/></audio> ");
@@ -152,25 +167,50 @@ function loadAns(){
 			$("#topic"+(index+1)).html(obj.choice[index].topic);
 			$("#detail"+(index+1)).html(obj.choice[index].detail);
 			$("#pics"+(index+1)).removeAttr('style');
-//			console.log("images/animal/"+obj.choice[index].pics);
-msgd=encodeURIComponent(escapeHtml("ว่าไงจ๊ะ"));
-if(index==0)
-$("body").append("<audio autoplay controls src='longsound/bird1.mp3'></audio>");
+
+		//if(index==0)
+				
+
+			_thismax.push(obj.choice[index].longsound);
+			txtsplit=obj.choice[index].pics.split(".");
+			_thisname.push(txtsplit[0]);
+			
+			//$("body").append("<audio autoplay controls src='longsound/bird1.mp3' id='lsound'></audio>");
 
 			$("#pics"+(index+1)).css({"background-image":"url(images/animal/"+obj.choice[index].pics+")"});
 			});
-
+			genAudio(_thismax[0],1);
 		}
 		});
 	
 }
 
-function escapeHtml(unsafe) {
-    return unsafe
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
+function genAudio(maxa,atchoice) {
+	 _atAudio=1;
+ if(maxa >0){
+	 $("#divg"+atchoice).fadeIn();
+	 detectPlay(_atAudio,atchoice);
+	 }
  }
+
+ function detectPlay(atplay,thischoice){
+	// console.log(_thisname);
+	var choicere=0;
+	 if(thischoice<5){
+	 $("#lsound").remove();
+	 if(atplay<=_thismax[thischoice-1]){
+		 if(atplay==_thismax[thischoice-1]&&thischoice==4){choicere=5;}
+	 $("body").append("<audio autoplay controls src='longsound/"+_thisname[thischoice-1]+""+atplay+".mp3' style='display:none;' id='lsound' onended='detectPlay("+(atplay+1)+","+(thischoice+choicere)+");'></audio>");
+	 } else
+	genAudio(_thismax[thischoice],thischoice+1);
+		}else{
+			load4=5;
+			$("#soundans").fadeIn();
+			 $("body").append("<audio autoplay controls src='longsound/ans.mp3' style='display:none;' id='ans' onended='dltans();'></audio>");
+			}
+	 }
+
+ function dltans(){
+$("#ans").remove();
+	 }
   </script>

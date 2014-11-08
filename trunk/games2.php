@@ -70,6 +70,7 @@ var countPair=0;
 var ballL="",ballR;
 var score2=0;
 $(function(){
+	 $("body").append("<audio autoplay controls src='longsound/game21.mp3' style='display:none;' id='timesout' onended='$(this).remove();'></audio>");
 	loadAns2();
 $(".toggleBall").click(function(){
 		if($(this).attr("checkedImg")!=2){

@@ -39,6 +39,8 @@
 
     $(document).ready(function(){
 //      $('#example').dataTable();
+$('audio').stop();
+$('audio').remove();
   	oTable = $('#example').dataTable({
           "bJQueryUI": true,
           "sPaginationType": "full_numbers"

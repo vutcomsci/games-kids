@@ -41,4 +41,16 @@ if(!isset($_SESSION['account_name'])){
   <body>
   	
   </body>
+  <script type="text/javascript" src="countdown/jquery.countdown.js"></script>
+
+  <script type="text/javascript" src="chart/highcharts.js">
+
+</script>
+    <script type="text/javascript" src="chart/exporting.js"></script>
+  <script type="text/javascript">
+ // var charta=$.noConflict();
+<!--
+
+//-->
+</script>
 </html>
