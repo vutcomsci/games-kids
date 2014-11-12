@@ -142,6 +142,7 @@ success:function(msg){
 	if(nums!=5)
 	{	
 $("#cAns").text("ข้อที่."+nums);
+
 loadAns();}
 }else{alert("กรุณาฟังคำอธิบาย");}
 });
@@ -153,11 +154,11 @@ function loadAns(){
 		url:'func/game1func.php?level=<?php echo $_GET["level"];?>&num='+nums,
 		success:function(res){
 			load4=0;
-			//console.log(res);
+			$("#divg1").hide();$("#divg2").hide();$("#divg3").hide();$("#divg4").hide();
 			var obj=$.parseJSON(res);
 			var msgd;
 			var txtsplit;
-			//console.log(obj);
+			console.log(obj);
 			$("#lsound").remove();
 			$("#correctAns").val(obj.correct);
 			$("#divsound").html('');
@@ -168,18 +169,19 @@ function loadAns(){
 			$("#detail"+(index+1)).html(obj.choice[index].detail);
 			$("#pics"+(index+1)).removeAttr('style');
 
-		//if(index==0)
-				
-
-			_thismax.push(obj.choice[index].longsound);
-			txtsplit=obj.choice[index].pics.split(".");
-			_thisname.push(txtsplit[0]);
+		
 			
+
+			_thismax[index]=obj.choice[index].longsound;
+			txtsplit=obj.choice[index].pics.split(".");
+			_thisname[index]=txtsplit[0];
+			if(index==0)
+				genAudio(_thismax[0],1);
 			//$("body").append("<audio autoplay controls src='longsound/bird1.mp3' id='lsound'></audio>");
 
 			$("#pics"+(index+1)).css({"background-image":"url(images/animal/"+obj.choice[index].pics+")"});
 			});
-			genAudio(_thismax[0],1);
+			
 		}
 		});
 	
