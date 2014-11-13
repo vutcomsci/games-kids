@@ -7,9 +7,9 @@ $resulttemp=mysql_fetch_array($querytemp);
 ?>
 <div style="font-size: 30px;color: black;">
 กำลังทดสอบ : <?php echo  prename($resulttemp["ch_prename"])." ".$resulttemp["ch_name"]. " ".$resulttemp["ch_lastname"]?></div>
-<div style="float:left;width: 100%;text-align: right;">
+<div style="float:left;width: 100%;text-align: right;" id="divbtn">
 <button class="btn btn-danger" style="margin-right: 1%;" onclick="resetPair();">จับคู่ใหม่</button>
-<button class="btn btn-success" style="margin-right: 5%;" >ข้อต่อไป</button>
+<button class="btn btn-success" style="margin-right: 5%;" onclick="checkSecond();" id="btnnxt">ข้อต่อไป</button>
 </div>
 <br/>
 <div>
@@ -94,6 +94,7 @@ $(".toggleBall2").click(function(){
 	$(this).attr("checkedImg","2");
 	ballR=$(this);
 	ballL.attr("checkedImg","2");
+	
 	if(ballL.attr("correctVal")==ballR.attr("correctVal"))
 		score2=1;
 		//alert("ถูก");
@@ -101,15 +102,17 @@ $(".toggleBall2").click(function(){
 		score2=0;
 
 	$.ajax({
-		url:"func/funcdes.php?type=2&num="+$(this).attr("numVal")+"&score="+score2
+		url:"func/funcdes.php?type=2&at="+game2num+"&score="+score2+"&num="+ballL.attr("correctVal")
 		});
 		//alert("ผิด");
 	countPair++;
 	drawPath();
 	if(countPair==4){
 	game2num++;
-	loadAns2();
+	//loadAns2();
 	}
+	ballL="";
+	ballR="";
 	}
 	else if($(this).attr("checkedImg")==2){ alert("เลือกคำตอบไปแล้ว");}
 	else{alert("โปรดเลือกเสียงก่อน");}
@@ -193,24 +196,33 @@ function resetPair(){
 	$('.toggleBall,.toggleBall2').attr('checkedImg','0')
 	
 }
-</script>
-<!-- <script> -->
-<!-- // $(function(){ -->
-<!-- // 	alert(distance(14.345368, 100.565577,14.349743, 100.562368)); -->
-	
-<!-- // }); -->
 
-<!-- // function distance(lat1,lon1,lat2,lon2) { -->
-<!-- // 	var R = 6371; // km (change this constant to get miles) -->
-<!-- // 	var dLat = (lat2-lat1) * Math.PI / 180; -->
-<!-- // 	var dLon = (lon2-lon1) * Math.PI / 180; -->
-<!-- // 	var a = Math.sin(dLat/2) * Math.sin(dLat/2) + -->
-<!-- // 		Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) * -->
-<!-- // 		Math.sin(dLon/2) * Math.sin(dLon/2); -->
-<!-- // 	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); -->
-<!-- // 	var d = R * c; -->
-<!-- // 	if (d>1) return Math.round(d)+"km"; -->
-<!-- // 	else if (d<=1) return Math.round(d*1000)+"m"; -->
-<!-- // 	return d; -->
-<!-- // } -->
-<!-- </script> -->
+function checkSecond(){
+	
+	if(countPair<4){
+alert("กรุณาจับคู่ให้ครบ");
+		}else{
+			$("#btnnxt").remove();
+			resetPair();
+			game2num=2;
+			loadAns2();
+			$("#divbtn").append('<button class="btn btn-success" style="margin-right: 5%;" onclick="checkSubmit();" id="btnnxt">ยืนยัน</button>');
+			}
+	
+}
+function checkSubmit(){
+	
+	if(countPair<4){
+alert("กรุณาจับคู่ให้ครบ");
+		}else{
+				$.ajax({
+				url:'func/functest.php?level=<?php echo $_GET["level"];?>&temp='+<?php echo $_GET["temp"];?>,
+				success:function(){
+alert("ทดสอบเสร็จสิ้น");
+childlink(1,'menuchild.php','');
+							}
+					});
+			}
+	
+}
+</script>
