@@ -1,7 +1,11 @@
 <?php
 require_once 'connect.php';
+$type=2;
+if(@isset($_GET["at"])){
+	$type=3;	
+}
 $sqlgame2="select * from gamesquiz,gamesexamination where gamesquiz.games_exa_id=gamesexamination.games_exa_id and
-  		games_types_lv=".$_GET["level"]." and games_types_id=2 and games_quiz_topic=".$_GET["num"];
+  		games_types_lv=".$_GET["level"]." and games_types_id=".$type." and games_quiz_topic=".$_GET["num"];
 $querychoice1=mysql_query($sqlgame2);
  $jsonStr='{"choice1":[';
  $outp=1;

@@ -6,9 +6,11 @@ $querytemp=mysql_query($sqltemp);
 $resulttemp=mysql_fetch_array($querytemp);
 ?>
 <div style="font-size: 30px;color: black;">
-กำลังทดสอบ : <?php echo  prename($resulttemp["ch_prename"])." ".$resulttemp["ch_name"]. " ".$resulttemp["ch_lastname"]?></div>
+กำลังทดสอบ : <?php echo  prename($resulttemp["ch_prename"])." ".$resulttemp["ch_name"]. " ".$resulttemp["ch_lastname"]?>
+<br/>ข้อที่ <span id="numscount">1.</span>
+</div>
 <div style="float:left;width: 100%;text-align: right;" id="divbtn">
-<button class="btn btn-danger" style="margin-right: 1%;" onclick="resetPair();">จับคู่ใหม่</button>
+<button class="btn btn-danger" style="margin-right: 1%;" onclick="resetPair();dltdes();">จับคู่ใหม่</button>
 <button class="btn btn-success" style="margin-right: 5%;" onclick="checkSecond();" id="btnnxt">ข้อต่อไป</button>
 </div>
 <br/>
@@ -202,6 +204,7 @@ function checkSecond(){
 	if(countPair<4){
 alert("กรุณาจับคู่ให้ครบ");
 		}else{
+			$("#numscount").text("2.");
 			$("#btnnxt").remove();
 			resetPair();
 			game2num=2;
@@ -224,5 +227,25 @@ childlink(1,'menuchild.php','');
 					});
 			}
 	
+}
+
+function dltdes(){
+
+	if(game2num==1){
+		$.ajax({
+			url:"func/funcdltdes.php?test_temp=0",
+			success:function(msg){
+console.log(msg);
+				}
+			});
+		}
+	else{
+		$.ajax({
+			url:"func/funcdltdes.php?test_temp=-1",
+			success:function(msg){
+				alert(msg);
+				}
+			});
+		}
 }
 </script>

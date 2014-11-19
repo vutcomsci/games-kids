@@ -4,6 +4,16 @@ require_once 'func/prename.php';
 $sqltemp="select * from children where ch_id=".$_GET["temp"];
 $querytemp=mysql_query($sqltemp);
 $resulttemp=mysql_fetch_array($querytemp);
+switch ($_GET["level"])
+{
+	case 1:$lva=0;break;
+	case 2:$lva=100;break;
+	case 3:$lva=300;break;
+	case 4:$lva=500;break;
+	case 5:$lva=700;break;
+	case 6:$lva=800;break;
+	
+}
 ?>
  <script>
      //  .// var 
@@ -85,9 +95,14 @@ $resulttemp=mysql_fetch_array($querytemp);
         			 // $("#btnnext").remove();
         			  $("#clockimg").remove(); 
         			  $("body").append("<audio autoplay controls src='longsound/timeout.mp3' style='display:none;' id='timesout' onended='dltTimes();'></audio>");
-        			  setTimeout(function(){$("#showdiv").load("games2.php?level=1&type=1&temp=<?php echo $_GET["temp"]?>")},2000);
+        			  setTimeout(function(){$("#showdiv").load("games32.php?level=<?php echo $_GET["level"];?>&type=1&temp=<?php echo $_GET["temp"]?>")},1000);
         			  //$("body").append('<div style="margin-left:40%;margin-top:6%"><button id="btnnext" class="btn btn-success" onclick="childlink(5,\"games2.php?level=1&type=1&temp=\",1);" >ข้อต่อไป</button></div>');
-        			 
+        			 $.ajax({
+						url:"func/game3func.php?test_temp=1&score="+num+"&num=-1",
+						success:function(msg){
+							console.log(msg);
+											}
+            			 });
         			  }
         		 });
 
@@ -98,18 +113,24 @@ $resulttemp=mysql_fetch_array($querytemp);
             imgadd=setInterval(function () {
                 random1 = Math.ceil(Math.random() * 100);
                 random2 = Math.ceil(Math.random() * 40);
-                $("#div1").append('<div class="monster" style="cursor:pointer;position: absolute;margin-left:' + random1 + '%;margin-top:' + random2 + '%;"></div>');
+                $("#div1").append('<div class="monster" style="cursor:pointer;position: absolute;margin-left:' + random1 + '%;margin-top:' + random2 + '%;" onclick="mousec(this);"></div>');
              //   console.log($('.monster').length);
-                 monsterclick();
+                 //monsterclick();
                 setTimeout(function () {
                     $(".monster:first").remove();
-                }, 2000);
-            }, 1500);
+                },<?php echo 2000-$lva;?>);
+            }, 700);
             
         	
         }
-        
-        function monsterclick() {
+
+        function mousec(xobj){
+        	  $(xobj).remove();
+              num=Number($("#score").text());
+              num=num+1;
+              $("#score").text(num);
+            }
+      /*  function monsterclick() {
             $(".monster").click(function () {
             	 $("body").append("<audio autoplay controls src='longsound/funny.wav' style='display:none;' id='funny' onended='$(this).remove();'></audio>");
                 if ($('.monster').length <= 2) {
@@ -125,7 +146,7 @@ $resulttemp=mysql_fetch_array($querytemp);
                 $("#score").text(num);
             });
             //monsterclick();
-        }
+        }*/
     </script>
 <style>
 body {

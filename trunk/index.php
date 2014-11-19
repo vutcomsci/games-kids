@@ -28,7 +28,8 @@ if(!isset($_SESSION['account_name'])){
 	<script type="text/javascript" src="js/datatable.js"></script>
 <link rel="stylesheet" href="css/datatable.css" />
       
-<link type="text/css" rel="stylesheet" href="css/ui.css" />    
+<link type="text/css" rel="stylesheet" href="css/ui.css" />   
+<link rel="stylesheet" href="css/fonts.css" /> 
 <!-- <link rel="stylesheet" href="//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables_themeroller.css" /> -->
     <script>
     $(function(){
@@ -38,6 +39,17 @@ if(!isset($_SESSION['account_name'])){
   	</script>
 
   </head>
+  <style>
+  body {
+ font-family: "BoonTook Ultra",sans-serif;
+  text-rendering: optimizeLegibility;
+  -moz-font-feature-settings:"kern" 1; 
+  -ms-font-feature-settings:"kern" 1; 
+  -o-font-feature-settings:"kern" 1; 
+  -webkit-font-feature-settings:"kern" 1; 
+  font-feature-settings:"kern" 1;
+}
+  </style>
   <body>
   	
   </body>
